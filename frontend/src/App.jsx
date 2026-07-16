@@ -1,6 +1,7 @@
 import {BrowserRouter, Routes, Route, Navigate} from 'react-router-dom';
 import Login from './components/Login';
 import Register from './components/Register';
+import UserList from './components/UserList';
 
 function App() {
     return (
@@ -11,7 +12,7 @@ function App() {
                     <Route path="/" element={<Navigate to="/login" />} />
                     <Route path="/login" element={<Login />} />
                     <Route path="/register" element={<Register />} />
-                    <Route path="/users" element={<h2>User List Dashboard </h2>} />
+                    <Route path="/users" element={<UserList />} />
                 </Routes>
             </div>
         </BrowserRouter>);
