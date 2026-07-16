@@ -33,7 +33,7 @@ export default function Register() {
             <form onSubmit={handleRegister} style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
                 <input type="text" placeholder="Full Name" value={name} onChange={(e) => setName(e.target.value)} required />
                 <input type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} required />
-                <input type="password" placeholder="Password (min 6)" value={password} onChange={(e) => setPassword(e.target.value)} required miLength="6" />
+                <input type="password" placeholder="Password (min 6)" value={password} onChange={(e) => setPassword(e.target.value)} required minLength="6" />
                 <button type="submit">Register</button>
             </form>
             <p>Already have an account? <Link to="/login">Login here</Link></p>

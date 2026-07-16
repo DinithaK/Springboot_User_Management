@@ -37,23 +37,40 @@ export default function UserList() {
 
     const handleEdit = async (user) => {
         const newName = window.prompt("Enter new name:", user.name);
-        const newEmail = window.prompt("Enter new email:", user.email);
-        const newPassword = window.prompt("Enter new password:", User.password);
+        if (newName === null) return;
 
-        if (newName && newEmail && newPassword) {
+        const newEmail = window.prompt("Enter new email:", user.email);
+        if(newEmail === null) return;
+
+        const newPassword = window.prompt("Enter new password:", user.password);
+        if(newPassword === null) return;
+
+        if (!newName.trim() || !newEmail.trim() || !newPassword.trim()) {
+            alert("Update failed: All fields required!");
+            return;
+        }
+
+
+        if (newPassword.length < 6) {
+                    alert("Update failed: Password must be at least 6 characters long!");
+                    return;
+                }
+
+
             try {
-                const response = await api.put('/users/${user.id}', {
+                const response = await api.put(`/users/${user.id}`, {
                     name: newName,
                     email: newEmail,
                     password: newPassword
                 });
 
                 setUsers(users.map(u => (u.id === user.id ? response.data : u)));
+                alert("User updated successfully!");
+
             } catch (error) {
-                console.error("Error updating user:, error");
+                console.error("Error updating user:", error);
                 alert("Failed to update.");
             }
-        }
     };
 
     return (
@@ -79,8 +96,8 @@ export default function UserList() {
                             <td style={{ padding: '10px' }}>{user.name}</td>
                             <td style={{ padding: '10px' }}>{user.email}</td>
                             <td style={{ padding: '10px' }}>
-                                <button style={{ marginRight: '10px', cursor: 'pointer' }}>Edit</button>
-                                <button style={{ cursor: 'pointer', color: 'red' }}>Delete</button>
+                                <button onClick={() => handleEdit(user)} style={{ marginRight: '10px', cursor: 'pointer' }}>Edit</button>
+                                <button onClick={() => handleDelete(user.id)} style={{ cursor: 'pointer', color: 'red' }}>Delete</button>
                             </td>
                         </tr>
                     ))}
