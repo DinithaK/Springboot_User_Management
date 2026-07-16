@@ -8,27 +8,27 @@ export default function Login() {
     const [error, setError] = useState('');
     const navigate = useNavigate();
 
-    const handleLogin = async (e) =>{
+    const handleLogin = async (e) => {
         e.preventDefault();
         try {
             await api.post('/login', { email, password });
             navigate('/users');
-        } catch (error){
+        } catch (error) {
             setError('Invalid email or password');
-            }
-        };
+        }
+    };
 
-            return (
-                <div style={{ maxWidth: '400px', margin: 'auto', marginTop: '50px'}}>
-                    <h2>Login</h2>
-                    {error && <p style={{ color: 'red'}}>{error}</p>}
+    return (
+        <div style={{ maxWidth: '400px', margin: 'auto', marginTop: '50px' }}>
+            <h2>Login</h2>
+            {error && <p style={{ color: 'red' }}>{error}</p>}
 
-                    <form onSubmit={handleLogin} style={{ display: 'flex', flexDirection: 'column', gap: '10px'}}>
-                        <input type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} required />
-                        <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} required />
-                        <button type="submit">Login</button>
-                    </form>
-                    <p>Don't have an account? <Link to="/register">Register here</Link></p>
-                </div>
-            );
-    }
+            <form onSubmit={handleLogin} style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                <input type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} required />
+                <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} required />
+                <button type="submit">Login</button>
+            </form>
+            <p>Don't have an account? <Link to="/register">Register here</Link></p>
+        </div>
+    );
+}

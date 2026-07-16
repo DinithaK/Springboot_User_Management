@@ -2,6 +2,7 @@ package com.example.demo.controller;
 
 import com.example.demo.entity.User;
 import com.example.demo.repository.UserRepository;
+import com.example.demo.service.UserService;
 import jakarta.validation.Valid;
 import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,23 +18,23 @@ import java.util.List;
 public class UserController {
 
     @Autowired
-    private UserRepository userRepository;
+    private UserService userService;
 
     @GetMapping("/users")
     public List<User> getAllUsers() {
-        return userRepository.findAll();
+        return userService.getAllUsers();
     }
 
     @GetMapping("/users/{id}")
     public ResponseEntity<User> getUserById(@PathVariable Long id) {
-        return userRepository.findById(id)
+        return userService.getUserById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
     @PostMapping("/register")
     public User registerUser(@Valid @RequestBody User user) {
-        return userRepository.save(user);
+        return userService.saveUser(user);
     }
 
     @PostMapping("/login")
@@ -41,7 +42,7 @@ public class UserController {
         String email = loginData.get("email");
         String password = loginData.get("password");
 
-        User user = userRepository.findByEmail(email);
+        User user = userService.findByEmail(email);
 
         if (user == null || !user.getPassword().equals(password)) {
             return ResponseEntity.status(org.springframework.http.HttpStatus.UNAUTHORIZED)
@@ -52,19 +53,19 @@ public class UserController {
     }
 
     @PutMapping("/users/{id}")
-    public ResponseEntity<User> updateUser(@PathVariable Long id, @Valid @RequestBody User userDetails){
-        return userRepository.findById(id).map(user -> {
+    public ResponseEntity<User> updateUser(@PathVariable Long id, @Valid @RequestBody User userDetails) {
+        return userService.getUserById(id).map(user -> {
             user.setName(userDetails.getName());
             user.setEmail(userDetails.getEmail());
             user.setPassword((userDetails.getPassword()));
-            return ResponseEntity.ok(userRepository.save(user));
+            return ResponseEntity.ok(userService.saveUser(user));
         }).orElse(ResponseEntity.notFound().build());
     }
 
     @DeleteMapping("/users/{id}")
     public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
-        return userRepository.findById(id).map(user -> {
-            userRepository.delete(user);
+        return userService.getUserById(id).map(user -> {
+            userService.deleteUser(user);
             return ResponseEntity.ok().<Void>build();
         }).orElse(ResponseEntity.notFound().build());
     }
