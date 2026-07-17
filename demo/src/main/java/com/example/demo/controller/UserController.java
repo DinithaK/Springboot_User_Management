@@ -20,6 +20,9 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private org.springframework.security.crypto.password.PasswordEncoder passwordEncoder;
+
     @GetMapping("/users")
     public List<User> getAllUsers() {
         return userService.getAllUsers();
@@ -34,6 +37,7 @@ public class UserController {
 
     @PostMapping("/register")
     public User registerUser(@Valid @RequestBody User user) {
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userService.saveUser(user);
     }
 
@@ -44,7 +48,7 @@ public class UserController {
 
         User user = userService.findByEmail(email);
 
-        if (user == null || !user.getPassword().equals(password)) {
+        if (user == null || !passwordEncoder.matches(password, user.getPassword())) {
             return ResponseEntity.status(org.springframework.http.HttpStatus.UNAUTHORIZED)
                     .body("Invalid email or password");
 
@@ -57,7 +61,7 @@ public class UserController {
         return userService.getUserById(id).map(user -> {
             user.setName(userDetails.getName());
             user.setEmail(userDetails.getEmail());
-            user.setPassword((userDetails.getPassword()));
+            user.setPassword(passwordEncoder.encode(userDetails.getPassword()));
             return ResponseEntity.ok(userService.saveUser(user));
         }).orElse(ResponseEntity.notFound().build());
     }

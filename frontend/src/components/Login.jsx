@@ -12,7 +12,10 @@ export default function Login() {
         e.preventDefault();
         try {
             await api.post('/login', { email, password });
-            navigate('/users');
+
+            localStorage.setItem("isAuthenticated", "true");
+
+            navigate('/home');
         } catch (error) {
             setError('Invalid email or password');
         }

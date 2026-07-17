@@ -19,8 +19,8 @@ export default function UserList() {
         }
     };
 
-    const handleLogout = () => {
-        navigate('/login');
+    const handleBack = () => {
+        navigate('/home');
     };
 
     const handleDelete = async (id) => {
@@ -77,7 +77,7 @@ export default function UserList() {
         <div style={{ maxWidth: '800px', margin: 'auto', marginTop: '50px' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <h2>User Dashboard</h2>
-                <button onClick={handleLogout} style={{ height: '40px', cursor: 'pointer' }}>Logout</button>
+                <button onClick={handleBack} style={{ height: '40px', cursor: 'pointer' }}>Back to Home</button>
             </div>
 
             <table border="1" style={{ width: '100%', textAlign: 'left', marginTop: '20px', borderCollapse: 'collapse' }}>

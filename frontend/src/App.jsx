@@ -2,16 +2,16 @@ import { BrowserRouter, Routes, Route, Navigate, Link } from 'react-router-dom';
 import Login from './components/Login';
 import Register from './components/Register';
 import UserList from './components/UserList';
+import Home from './components/Home';
+
+const ProtectedRoute = ({ children }) => {
+    const isAuthenticated = localStorage.getItem("isAuthenticated") === "true";
+    return isAuthenticated ? children : <Navigate to="/login" />;
+    };
 
 function App() {
     return (
         <BrowserRouter>
-            <div style={{fontFamily: 'sans-serif'}}>
-                <nav style={{backgroundColor: '#282c34', padding: '15px', textAlign: 'center'}}>
-                    <Link to="/users" style={{color: 'white', margin: '0 15px', textDecoration: 'none', fontWeight: 'bold'}}>Dashboard</Link>
-                    <Link to="/login" style={{color: 'white', margin: '0 15px', textDecoration: 'none'}}>Login</Link>
-                    <Link to="/register" style={{color: 'white', margin: '0 15px', textDecoration: 'none'}}>Register</Link>
-                </nav>
 
             <div style={{ padding: '20px', fontFamily: 'sans-serif' }}>
                 <h1 style={{ textAlign: 'center' }}>Inova User Management</h1>
@@ -19,10 +19,13 @@ function App() {
                     <Route path="/" element={<Navigate to="/login" />} />
                     <Route path="/login" element={<Login />} />
                     <Route path="/register" element={<Register />} />
-                    <Route path="/users" element={<UserList />} />
+
+                    <Route path="/home" element={<ProtectedRoute> <Home/> </ProtectedRoute>}/>
+
+                    <Route path="/users" element={ <ProtectedRoute> <UserList /> </ProtectedRoute>} />
                 </Routes>
             </div>
-            </div>
+
         </BrowserRouter>);
 }
 export default App;
