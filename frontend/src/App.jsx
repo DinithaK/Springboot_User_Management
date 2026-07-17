@@ -5,8 +5,8 @@ import UserList from './components/UserList';
 import Home from './components/Home';
 
 const ProtectedRoute = ({ children }) => {
-    const isAuthenticated = localStorage.getItem("isAuthenticated") === "true";
-    return isAuthenticated ? children : <Navigate to="/login" />;
+    const hasToken = localStorage.getItem("token") !== null;
+    return hasToken ? children : <Navigate to="/login" />;
     };
 
 function App() {

@@ -11,9 +11,9 @@ export default function Login() {
     const handleLogin = async (e) => {
         e.preventDefault();
         try {
-            await api.post('/login', { email, password });
+            const response = await api.post('/login', { email, password });
 
-            localStorage.setItem("isAuthenticated", "true");
+            localStorage.setItem("token", response.data.token);
 
             navigate('/home');
         } catch (error) {

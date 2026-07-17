@@ -4,7 +4,7 @@ export default function Home() {
     const navigate = useNavigate();
 
     const handleLogout = () => {
-        localStorage.removeItem("isAuthenticated");
+        localStorage.removeItem("token");
         navigate('/login');
         };
     return (

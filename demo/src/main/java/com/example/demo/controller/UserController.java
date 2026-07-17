@@ -23,6 +23,9 @@ public class UserController {
     @Autowired
     private org.springframework.security.crypto.password.PasswordEncoder passwordEncoder;
 
+    @Autowired
+    private com.example.demo.config.JwtUtil jwtUtil;
+
     @GetMapping("/users")
     public List<User> getAllUsers() {
         return userService.getAllUsers();
@@ -51,8 +54,12 @@ public class UserController {
         if (user == null || !passwordEncoder.matches(password, user.getPassword())) {
             return ResponseEntity.status(org.springframework.http.HttpStatus.UNAUTHORIZED)
                     .body("Invalid email or password");
-
         }
+        String token = jwtUtil.generateToken(email);
+
+        java.util.Map<String, String> response = new java.util.HashMap<>();
+        response.put("token", token);
+
         return ResponseEntity.ok("Login successful");
     }
 
